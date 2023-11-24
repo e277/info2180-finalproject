@@ -12,7 +12,8 @@ CREATE TABLE `users` (
   `password` VARCHAR(255),
   `email` VARCHAR(255),
   `role` VARCHAR(255),
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 );
 
 DROP TABLE IF EXISTS `contacts`;
@@ -28,7 +29,10 @@ CREATE TABLE `contacts` (
   `assigned_to` INTEGER(11), -- store appriate user_id
   `created_by` INTEGER(11), -- store appriate user_id
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`assigned_to`) REFERENCES `users`(`id`),
+  FOREIGN KEY (`created_by`) REFERENCES `users`(`id`)
 );
 
 DROP TABLE IF EXISTS `notes`;
@@ -37,7 +41,10 @@ CREATE TABLE `notes` (
   `contact_id` INTEGER(11),
   `comment` TEXT,
   `created_by` INTEGER(11), -- store appriate user_id
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`),
+  FOREIGN KEY (`created_by`) REFERENCES `users`(`id`)
 );
 
 
