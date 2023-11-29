@@ -8,7 +8,7 @@ require "sidebar.php";
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
-    header("Location: /info2180-finalproject/index.php");
+    header("Location: /info2180-finalproject/dashboard.php");
 }
 
 if ($_SESSION["user_role"] == "admin") {
