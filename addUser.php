@@ -1,53 +1,113 @@
 <?php
+require "dbConfig.php";
 require "header.php";
 require "sidebar.php";
+
+session_start();
+
+if (!isset($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION["csrf_token"];
+// print_r($csrf_token);
+
+if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
+    header("Location: /info2180-finalproject/dashboard.php");
+}
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-    <div style="text-align: left;">
-        <img src="C:\Users\18765\Downloads\info2180-finalproject\dolphin.png" style="width: 50px; height: 50px; vertical-align: middle;">
-        <h1 style="display: inline-block; vertical-align: middle; margin-left: 5px;">Dolphin CRM</h1>
+<section>
+    <div>
+        <h3>New User</h3>
     </div>
-    <div style="text-align: center;">
-        <div style="display: flex; justify-content: center;">
-            <h2 style="margin-top: 0;">New User</h2>
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+        <div>
+            <input type="hidden" name="csrf_token" value="<?=$csrf_token; ?>">
+            <div>
+                <label for="firstname">First Name</label>
+                <input type="text" id="firstname" name="firstname">
+            </div>
+            <div>
+                <label for="lastname">Last Name</label>
+                <input type="text" id="lastname" name="lastname">
+            </div>
         </div>
-        <form>
-            <div style="display: flex; justify-content: center;">
-                <div style="text-align: left; margin-right: 20px;">
-                    <label for="firstName">First Name:</label><br>
-                    <input type="text" id="firstName" name="firstName">
-                </div>
-                <div style="text-align: left;">
-                    <label for="lastName">Last Name:</label><br>
-                    <input type="text" id="lastName" name="lastName">
-                </div>
+        <div>
+            <div>
+                <label for="email">Email</label><br>
+                <input type="email" id="email" name="email">
             </div>
-            <div style="display: flex; justify-content: center; margin-top: 20px;">
-                <div style="text-align: left; margin-right: 20px;">
-                    <label for="email">Email:</label><br>
-                    <input type="email" id="email" name="email">
-                </div>
-                <div style="text-align: left;">
-                    <label for="password">Password:</label><br>
-                    <input type="password" id="password" name="password">
-                </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
             </div>
-            <div style="display: flex; justify-content: center; margin-top: 20px;">
-                <div style="text-align: left;">
-                    <label for="role">Role:</label><br>
-                    <input type="text" id="role" name="role">
-                </div>
-                <div style="text-align: left; margin-left: 20px; margin-top: 25px;">
-                    <input type="submit" value="Save">
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    
+        <div>
+            <label for="role">Role</label>
+            <select name="role" id="role">
+                <option value="member">Member</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" name="save">Save</button>
+        </div>
+    </form>
+</section>
 </body>
 </html>
+
+
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!isset($_POST["csrf_token"]) || !isset($_POST["firstname"]) || !isset($_POST["lastname"]) || !isset($_POST["email"]) || !isset($_POST["password"]) || !isset($_POST["role"])) {
+        echo "<script>alert('All fields are required')</script>";
+        header("Location: /info2180-finalproject/addUser.php");
+    }
+    
+    
+    $firstname = $_POST["firstname"];
+    $lastname  = $_POST["lastname"];
+    $email     = $_POST["email"];
+    $password  = $_POST["password"];
+    $role      = $_POST["role"];
+
+    if (!hash_equals($_SESSION["csrf_token"], $_POST["csrf_token"])) {
+        // echo "<script>alert('Invalid CSRF token')</script>";
+        header("Location: /info2180-finalproject/addUser.php");
+    }
+
+    $firstname = htmlspecialchars($firstname, ENT_QUOTES, "UTF-8");
+    $lastname = htmlspecialchars($lastname, ENT_QUOTES, "UTF-8");
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $password = htmlspecialchars($password, ENT_QUOTES, "UTF-8");
+    $role = htmlspecialchars($role, ENT_QUOTES, "UTF-8");
+
+    $sql = "SELECT * FROM users WHERE email = :email";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(":email", $email);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        echo "<script>alert('User already exists')</script>";
+        header("Location: /info2180-finalproject/addUser.php");
+    }
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO users (firstname, lastname, email, password, role) VALUES (:firstname, :lastname, :email, :password, :role)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(":firstname", $firstname);
+    $stmt->bindParam(":lastname", $lastname);
+    $stmt->bindParam(":email", $email);
+    $stmt->bindParam(":password", $password);
+    $stmt->bindParam(":role", $role);
+    $stmt->execute();
+
+    header("Location: /info2180-finalproject/viewUser.php");
+}
+
+?>

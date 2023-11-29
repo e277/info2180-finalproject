@@ -26,7 +26,8 @@ try {
 
     // Loop
     foreach ($users as $user) {
-        $stmt->execute(["email" => $user[3]]);
+        $stmt->bindParam(":email", $user[3]);
+        $stmt->execute();
 
         // if email not in db
         if ($stmt->rowCount() == 0) {

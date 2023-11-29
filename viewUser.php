@@ -1,13 +1,34 @@
 <?php
-// require "dbConfig.php";
+require "dbConfig.php";
 require "header.php";
 require "sidebar.php";
+
+
+// php processing
+session_start();
+
+if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
+    header("Location: /info2180-finalproject/index.php");
+}
+
+if ($_SESSION["user_role"] == "admin") {
+    $sql = "SELECT * FROM users";
+}
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// echo "<pre>";
+// var_dump($users);
+// echo "</pre>";
+
 ?>
 
 <section>
     <div>
         <h1>Users</h1>
-        <button>+ Add User</button>
+        <a href="addUser.php">+ Add User</a>
     </div>
     <table>
         <tr>
@@ -16,27 +37,17 @@ require "sidebar.php";
             <th>Role</th>
             <th>Created</th>
         </tr>
-        <tr>
-            <td>John Doe</td>
-            <td>johndoe@gmail.com</td>
-            <td>Member</td>
-            <td>2020-01-01</td>
-        </tr>
-        
-        <?php //foreach ($users as $user): ?>
-        <tr>
-            <td><?php // $user["firstname"] . " " . $user["lastname"] ?></td>
-            <td><?php // $user["email"] ?></td>
-            <td><?php // $user["role"] ?></td>
-            <td><?php // $user["created"] ?></td>
-        </tr>
-        <?php //endforeach; ?>
+
+        <!-- For loop to display data in a table -->
+        <?php foreach ($users as $user): ?>
+            <tr>
+                <td><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
+                <td><?php echo $user["email"]; ?></td>
+                <td><?php echo $user["role"]; ?></td>
+                <td><?php echo $user["created_at"]; ?></td>
+            </tr>
+        <?php endforeach; ?>
     </table>
     
 </section>
 
-
-<?php
-// php processing
-
-?>

@@ -1,53 +1,53 @@
 <?php
 require "dbConfig.php";
 require "header.php";
-?>
-
-
-    <section>
-        <div class="login">
-            <h1>Login</h1>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
-                <input type="hidden" name="csrf_token">
-                <div>
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Email address">
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password">
-                </div>
-                <div>
-                    <button type="submit" id="login-btn">Login</button>
-                </div>
-            </form>
-            <p>
-                Copyright &copy; 2023 Dolphin CRM
-            </p>
-        </div>
-    </section>
-</body>
-</html>
-
-
-<?php
 
 session_start();
 
+if (!isset($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION["csrf_token"];
+
+?>
+<section>
+    <div class="login">
+        <h1>Login</h1>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
+            <input type="hidden" name="csrf_token" value="<?=$csrf_token; ?>">
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email address">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password">
+            </div>
+            <div>
+                <button type="submit" id="login-btn">Login</button>
+            </div>
+        </form>
+        <p>
+            Copyright &copy; 2023 Dolphin CRM
+        </p>
+    </div>
+</section>
+</body>
+</html>
+
+<?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     if (!isset($_POST["csrf_token"]) || !isset($_POST["email"]) || !isset($_POST["password"])) {
         echo "<script>alert('Email, password, and CSRF token are required')</script>";
         header("Location: /info2180-finalproject/");
     }
 
-    $csrf_token = $_POST["csrf_token"];
-    $key = hash("sha512", $csrf_token);
-    $_SESSION["csrf_token"] = $key;
-    
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    if (!hash_equals($_SESSION["csrf_token"], $_POST["csrf_token"])) {
+    if (!hash_equals($csrf_token, $_POST["csrf_token"])) {
         // echo "<script>alert('Invalid CSRF token')</script>";
         header("Location: /info2180-finalproject/");
     }
