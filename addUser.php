@@ -80,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: /info2180-finalproject/addUser.php");
     }
     
-    
     $firstname = $_POST["firstname"];
     $lastname  = $_POST["lastname"];
     $email     = $_POST["email"];
@@ -100,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('Password must be at least 8 characters long and contain at least one number and uppercase letter')</script>";
         header("Location: /info2180-finalproject/addUser.php");
     }
-    
+
     $password = htmlspecialchars($password, ENT_QUOTES, "UTF-8");
     $role = htmlspecialchars($role, ENT_QUOTES, "UTF-8");
 
