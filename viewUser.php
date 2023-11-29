@@ -18,10 +18,7 @@ if ($_SESSION["user_role"] == "admin") {
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// echo "<pre>";
-// var_dump($users);
-// echo "</pre>";
+// print_r($users);
 
 ?>
 

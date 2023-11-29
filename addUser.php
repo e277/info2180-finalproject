@@ -62,8 +62,20 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
 
 <?php
 
+function checkPassword($password) {
+    $pattern = '/^(?=.*\d)(?=.*[A-Za-z])(?=.*[A-Z])[A-Za-z\d]{8,}$/';
+    return preg_match($pattern, $password);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!isset($_POST["csrf_token"]) || !isset($_POST["firstname"]) || !isset($_POST["lastname"]) || !isset($_POST["email"]) || !isset($_POST["password"]) || !isset($_POST["role"])) {
+    if (
+        !isset($_POST["csrf_token"]) 
+        || !isset($_POST["firstname"]) 
+        || !isset($_POST["lastname"]) 
+        || !isset($_POST["email"]) 
+        || !isset($_POST["password"]) 
+        || !isset($_POST["role"])
+    ) {
         echo "<script>alert('All fields are required')</script>";
         header("Location: /info2180-finalproject/addUser.php");
     }
@@ -83,6 +95,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstname = htmlspecialchars($firstname, ENT_QUOTES, "UTF-8");
     $lastname = htmlspecialchars($lastname, ENT_QUOTES, "UTF-8");
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+    if (!checkPassword($password)) {
+        echo "<script>alert('Password must be at least 8 characters long and contain at least one number and uppercase letter')</script>";
+        header("Location: /info2180-finalproject/addUser.php");
+    }
+    
     $password = htmlspecialchars($password, ENT_QUOTES, "UTF-8");
     $role = htmlspecialchars($role, ENT_QUOTES, "UTF-8");
 
