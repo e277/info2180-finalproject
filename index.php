@@ -14,7 +14,7 @@ $csrf_token = $_SESSION["csrf_token"];
     <div class="login">
         <h1>Login</h1>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
-            <input type="hidden" name="csrf_token" value="<?=$csrf_token; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <div>
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" placeholder="Email address">

@@ -1,13 +1,26 @@
 <?php
-// require "dbConfig.php";
+require "dbConfig.php";
 require "header.php";
 require "sidebar.php";
+
+session_start();
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /info2180-finalproject/index.php");
+}
+
+$sql = "SELECT * FROM contacts";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// print_r($contacts);
+
 ?>
 
 <section>
     <div>
         <h1>Dashboard</h1>
-        <button>+ Add Contact</button>
+        <a href="addContact.php">+ Add Contact</a>
     </div>
     <div>
         <div>
@@ -27,19 +40,17 @@ require "sidebar.php";
                 <th>Company</th>
                 <th>Type</th>
             </tr>
-            <tr>
-                <td>Mr. Michael Scott</td>
-                <td>michael.scott@paper.com</td>
-                <td>Dunder Mifflin</td>
-                <td class="type">Sales Lead</td>
-                <td><a href="viewContact.php"></a></td>
+            <?php foreach ($contacts as $contact): ?>
+                <tr>
+                    <td><?php echo $contact["firstname"] . " " . $contact["lastname"]; ?></td>
+                    <td><?php echo $contact["email"]; ?></td>
+                    <td><?php echo $contact["company"]; ?></td>
+                    <td class="type"><?php echo $contact["type"]; ?></td>
+                    <td><a href="viewContact.php">View</a></td>
+                </tr>
+            <?php endforeach; ?>
         </table>
     </div>
-    
 </section>
-
-
-<?php
-// php processing
-
-?>
+</body>
+</html>

@@ -23,7 +23,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
     </div>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
         <div>
-            <input type="hidden" name="csrf_token" value="<?=$csrf_token; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <div>
                 <label for="firstname">First Name</label>
                 <input type="text" id="firstname" name="firstname">
