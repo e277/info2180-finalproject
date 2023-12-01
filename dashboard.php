@@ -13,7 +13,10 @@ $sql = "SELECT * FROM contacts";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// print_r($contacts);
+// print_r("<pre>");
+// print_r($contacts[0]);
+// print_r("</pre>");
+
 
 ?>
 
@@ -46,7 +49,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $contact["email"]; ?></td>
                     <td><?php echo $contact["company"]; ?></td>
                     <td class="type"><?php echo $contact["type"]; ?></td>
-                    <td><a href="viewContact.php">View</a></td>
+                    <td><a href="viewContact.php?id=<?php echo urlencode($contact['id']); ?>">View</a></td>
                 </tr>
             <?php endforeach; ?>
         </table>

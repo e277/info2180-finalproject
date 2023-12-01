@@ -27,13 +27,14 @@ $contact_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section>
     <h1>New Contact</h1>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <input type="hidden" name="csrf_token" value="<?=$csrf_token; ?>">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
         <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
         <div>
             <label for="title">Title</label>
             <select name="title" id="title">
-                <option value="mr">Mr.</option>
-                <option value="ms">Ms.</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
             </select>
         </div>
         <div>
@@ -64,8 +65,8 @@ $contact_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div>
                 <label for="type">Type</label>
                 <select name="type" id="type">
-                    <option value="sales">Sales Lead</option>
-                    <option value="support">Support</option>
+                    <option value="Sales Lead">Sales Lead</option>
+                    <option value="Support">Support</option>
                 </select>
             </div>
         </div>
@@ -91,7 +92,6 @@ $contact_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (
         !isset($_POST["csrf_token"])
-        || !isset($_POST["user_id"])
         || !isset($_POST["title"]) 
         || !isset($_POST["firstname"]) 
         || !isset($_POST["lastname"]) 
@@ -100,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         || !isset($_POST["company"]) 
         || !isset($_POST["type"]) 
         || !isset($_POST["assigned_to"]) 
+        || !isset($_POST["user_id"])
     ) {
         echo "<script>alert('All fields are required')</script>";
         header("Location: /info2180-finalproject/addContact.php");
@@ -140,7 +141,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(":type", $type);
     $stmt->bindParam(":assigned_to", $assigned_to);
     $stmt->bindParam(":created_by", $created_by);
-
     $stmt->execute();
 
     header("Location: /info2180-finalproject/dashboard.php");
