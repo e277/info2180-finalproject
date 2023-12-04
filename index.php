@@ -1,6 +1,5 @@
 <?php
 require "dbConfig.php";
-require "header.php";
 
 session_start();
 
@@ -9,33 +8,6 @@ if (!isset($_SESSION["csrf_token"])) {
 }
 $csrf_token = $_SESSION["csrf_token"];
 
-?>
-<section>
-    <div class="login">
-        <h1>Login</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email address">
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password">
-            </div>
-            <div>
-                <button type="submit" id="login-btn">Login</button>
-            </div>
-        </form>
-        <p>
-            Copyright &copy; 2023 Dolphin CRM
-        </p>
-    </div>
-</section>
-</body>
-</html>
-
-<?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -64,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["user_name"] = $user["name"];
         $_SESSION["user_role"] = $user["role"];
-        header("Location: /info2180-finalproject/dashboard.php");
+        header("Location: /info2180-finalproject/home.php");
     } else {
         echo "<script>alert('Invalid email or password')</script>";
         header("Location: /info2180-finalproject/");
@@ -72,3 +44,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="dolphin.png" alt="Dolphin Logo">
+        <span>Dolphin CRM</span>
+    </header>
+    <section>
+        <div class="login">
+            <h1>Login</h1>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Email address">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Password">
+                </div>
+                <div>
+                    <button type="submit" id="login-btn">Login</button>
+                </div>
+            </form>
+            <p>
+                Copyright &copy; 2023 Dolphin CRM
+            </p>
+        </div>
+    </section>
+</body>
+</html>

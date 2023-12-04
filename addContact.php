@@ -1,7 +1,5 @@
 <?php
 require "dbConfig.php";
-require "header.php";
-require "sidebar.php";
 
 session_start();
 
@@ -21,73 +19,6 @@ $stmt->execute();
 $contact_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // print_r($contact_users);
 
-?>
-
-
-<section>
-    <h1>New Contact</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-        <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
-        <div>
-            <label for="title">Title</label>
-            <select name="title" id="title">
-                <option value="Mr.">Mr.</option>
-                <option value="Ms.">Ms.</option>
-                <option value="Mrs.">Mrs.</option>
-            </select>
-        </div>
-        <div>
-            <div>
-                <label for="firstname">First Name</label>
-                <input type="text" name="firstname" id="firstname" placeholder="First Name">
-            </div>
-            <div>
-                <label for="lastname">Last Name</label>
-                <input type="text" name="lastname" id="lastname" placeholder="Last Name">
-            </div>
-        </div>
-        <div>
-            <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email address">
-            </div>
-            <div>
-                <label for="telephone">Telephone</label>
-                <input type="tel" name="telephone" id="telephone" placeholder="Telephone">
-            </div>
-        </div>
-        <div>
-            <div>
-                <label for="company">Company</label>
-                <input type="text" name="company" id="company" placeholder="Company name">
-            </div>
-            <div>
-                <label for="type">Type</label>
-                <select name="type" id="type">
-                    <option value="Sales Lead">Sales Lead</option>
-                    <option value="Support">Support</option>
-                </select>
-            </div>
-        </div>
-        <div>
-            <label for="assigned_to">Assigned To</label>
-            <select name="assigned_to" id="assigned_to">
-                <?php foreach ($contact_users as $user): ?>
-                    <option value="<?php echo $user["id"]; ?>"><?php echo $user["firstname"] . ' '. $user['lastname']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div>
-            <button type="submit" name="save">Save</button>
-        </div>
-    </form>
-</section>
-</body>
-</html>
-
-
-<?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (
@@ -147,3 +78,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
+
+    <div>
+        <h1>New Contact</h1>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
+            <div>
+                <label for="title">Title</label>
+                <select name="title" id="title">
+                    <option value="Mr.">Mr.</option>
+                    <option value="Ms.">Ms.</option>
+                    <option value="Mrs.">Mrs.</option>
+                </select>
+            </div>
+            <div>
+                <div>
+                    <label for="firstname">First Name</label>
+                    <input type="text" name="firstname" id="firstname" placeholder="First Name">
+                </div>
+                <div>
+                    <label for="lastname">Last Name</label>
+                    <input type="text" name="lastname" id="lastname" placeholder="Last Name">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Email address">
+                </div>
+                <div>
+                    <label for="telephone">Telephone</label>
+                    <input type="tel" name="telephone" id="telephone" placeholder="Telephone">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="company">Company</label>
+                    <input type="text" name="company" id="company" placeholder="Company name">
+                </div>
+                <div>
+                    <label for="type">Type</label>
+                    <select name="type" id="type">
+                        <option value="Sales Lead">Sales Lead</option>
+                        <option value="Support">Support</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="assigned_to">Assigned To</label>
+                <select name="assigned_to" id="assigned_to">
+                    <?php foreach ($contact_users as $user): ?>
+                        <option value="<?php echo $user["id"]; ?>"><?php echo $user["firstname"] . ' '. $user['lastname']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <button type="submit" name="save">Save</button>
+            </div>
+        </form>
+    </div>

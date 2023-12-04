@@ -1,7 +1,5 @@
 <?php
 require "dbConfig.php";
-require "header.php";
-require "sidebar.php";
 
 session_start();
 
@@ -15,52 +13,6 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
     header("Location: /info2180-finalproject/dashboard.php");
 }
 
-?>
-
-<section>
-    <div>
-        <h3>New User</h3>
-    </div>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <div>
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <div>
-                <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname">
-            </div>
-            <div>
-                <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname">
-            </div>
-        </div>
-        <div>
-            <div>
-                <label for="email">Email</label><br>
-                <input type="email" id="email" name="email">
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password">
-            </div>
-        </div>
-    
-        <div>
-            <label for="role">Role</label>
-            <select name="role" id="role">
-                <option value="member">Member</option>
-                <option value="admin">Admin</option>
-            </select>
-        </div>
-        <div>
-            <button type="submit" name="save">Save</button>
-        </div>
-    </form>
-</section>
-</body>
-</html>
-
-
-<?php
 
 function checkPassword($password) {
     $pattern = '/^(?=.*\d)(?=.*[A-Za-z])(?=.*[A-Z])[A-Za-z\d]{8,}$/';
@@ -128,3 +80,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
+
+    <div>
+        <div>
+            <h3>New User</h3>
+        </div>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <div>
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <div>
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname">
+                </div>
+                <div>
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="email">Email</label><br>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+            </div>
+        
+            <div>
+                <label for="role">Role</label>
+                <select name="role" id="role">
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" name="save">Save</button>
+            </div>
+        </form>
+    </div>
+
