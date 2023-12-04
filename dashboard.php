@@ -17,10 +17,20 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</head>
     <div>
         <div>
             <h1>Dashboard</h1>
-            <a href="addContact.php">+ Add Contact</a>
+            <button id="addContactBtn">+ Add Contact</button>
         </div>
         <div>
             <div>
@@ -46,7 +56,8 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $contact["email"]; ?></td>
                         <td><?php echo $contact["company"]; ?></td>
                         <td class="type"><?php echo $contact["type"]; ?></td>
-                        <td><a href="viewContact.php?id=<?php echo urlencode($contact['id']); ?>">View</a></td>
+                        <!-- <td><a href="viewContact.php?id=<?php //echo urlencode($contact['id']); ?>">View</a></td> -->
+                        <td><button id="viewContactBtn"></button></td>
                     </tr>
                 <?php endforeach; ?>
             </table>

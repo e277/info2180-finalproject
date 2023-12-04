@@ -1,9 +1,7 @@
 $(document).ready(function () {
-    // console.log("Document is ready");
     // jquery code here
     $("#homeBtn").click(function (e) {
         e.preventDefault();
-        // console.log("Home button clicked");
         $.ajax({
             type: "GET",
             url: "dashboard.php",
@@ -18,12 +16,11 @@ $(document).ready(function () {
 
     $("#contactBtn").click(function (e) {
         e.preventDefault();
-        // console.log("Contact button clicked");
         $.ajax({
             url: "addContact.php",
             type: "POST",
-            success: function (data) {
-                $("#content").html(data);
+            success: function (response) {
+                $("#content").html(response);
             },
             error: function (error) {
                 console.log(error);
@@ -33,12 +30,40 @@ $(document).ready(function () {
 
     $("#userBtn").click(function (e) {
         e.preventDefault();
-        // console.log("User button clicked");
         $.ajax({
             url: "viewUser.php",
             type: "GET",
-            success: function (data) {
-                $("#content").html(data);
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+    $("#addContactBtn").click(function () {
+        console.log("add contact");
+        $.ajax({
+            url: "addContact.php",
+            type: "POST",
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $("#addUserBtn").click(function () {
+        console.log("add user");
+        $.ajax({
+            url: "addUser.php",
+            type: "POST",
+            success: function (response) {
+                $("#content").html(response);
             },
             error: function (error) {
                 console.log(error);
