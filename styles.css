@@ -66,8 +66,8 @@ header img {
 }
 
 section {
-    margin-left: 250px;
     width: calc(100% - 250px);
+    margin: 0 auto;
 }
 
 section div {
