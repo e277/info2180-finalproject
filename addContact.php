@@ -10,7 +10,7 @@ $csrf_token = $_SESSION["csrf_token"];
 // print_r($csrf_token);
 
 if (!isset($_SESSION["user_id"])) {
-    header("Location: /info2180-finalproject/dashboard.php");
+    header("Location: /info2180-finalproject/");
 }
 
 $sql = "SELECT * FROM users";
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(":created_by", $created_by);
     $stmt->execute();
 
-    header("Location: /info2180-finalproject/dashboard.php");
+    header("Location: /info2180-finalproject/home.php");
 }
 
 ?>

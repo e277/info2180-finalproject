@@ -10,7 +10,7 @@ $csrf_token = $_SESSION["csrf_token"];
 // print_r($csrf_token);
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
-    header("Location: /info2180-finalproject/dashboard.php");
+    header("Location: /info2180-finalproject/");
 }
 
 
@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(":role", $role);
     $stmt->execute();
 
-    header("Location: /info2180-finalproject/viewUser.php");
+    header("Location: /info2180-finalproject/home.php");
 }
 
 ?>

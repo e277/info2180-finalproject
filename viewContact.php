@@ -38,55 +38,26 @@ $stmt2->bindParam(":created_by", $contact['created_by']);
 $stmt2->execute();
 $created_by = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-// get user who has been assigned to
-$sql3 = "SELECT u.firstname, u.lastname FROM users u JOIN contacts c ON u.id  = c.assigned_to WHERE u.id = :assigned_to AND c.assigned_to IS NOT NULL";
+// get contact who has been assigned to
+$sql3 = "SELECT c.firstname, c.lastname FROM users u JOIN contacts c ON u.id = c.assigned_to WHERE u.id = :assigned_to AND c.assigned_to IS NOT NULL";
 $stmt3 = $pdo->prepare($sql3);
 $stmt3->bindParam(":assigned_to", $contact['assigned_to']);
 $stmt3->execute();
 $assigned_to = $stmt3->fetch(PDO::FETCH_ASSOC);
 
-$sql4 = "SELECT * FROM notes WHERE contact_id = :id";
+// get notes for contact
+$sql4 = "SELECT u.id, u.firstname, u.lastname, n.comment, n.created_at FROM notes n JOIN users u ON u.id = n.created_by WHERE u.id = :created_by AND n.created_by IS NOT NULL";
 $stmt4 = $pdo->prepare($sql4);
-$stmt4->bindParam(":id", $user_id);
+$stmt4->bindParam(":created_by", $_SESSION["user_id"]);
 $stmt4->execute();
 $notes = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 // print_r($notes);
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        !isset($_POST["csrf_token"])
-        || !isset($_POST["user_id"])
-        || !isset($_POST["contact_id"])
-        || !isset($_POST["comment"])
-    ) {
-        echo "<script>alert('All fields are required')</script>";
-        header("Location: /info2180-finalproject/viewContact.php");
-    }
-
-    if (!hash_equals($csrf_token, $_POST["csrf_token"])) {
-        // echo "<script>alert('Invalid CSRF token')</script>";
-        header("Location: /info2180-finalproject/");
-    }
-
-    $comment = $_POST["comment"];
-    $user_id = $_POST["user_id"];
-    $contact_id = $_POST["contact_id"];
-
-    $comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
-    $user_id = htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8');
-    $contact_id = htmlspecialchars($contact_id, ENT_QUOTES, 'UTF-8');
-
-    $sql = "INSERT INTO notes (contact_id, comment, created_by) VALUES (:contact_id, :comment, :user_id)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(":contact_id", $contact_id);
-    $stmt->bindParam(":comment", $comment);
-    $stmt->bindParam(":user_id", $user_id);
-    $stmt->execute();
+foreach ($notes as $note) {
+    $created_by_note = new DateTime($note['created_at']);
+    $created_by_note = $created_by_note->format("M, j, Y") . " at " . $created_by_note->format("g:i A");
 }
 
 ?>
-
     <div>
         <div>
             <div>
@@ -128,25 +99,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div>
-            <input type="checkbox" name="notes" id="notes">
-            <label for="notes">Notes</label>
-            <div>
-                <h3>John Doe</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Iusto modi beatae sed ut necessitatibus, aliquam maiores 
-                    ipsum numquam, laboriosam sapiente nam saepe, et voluptates 
-                    quod magnam sint temporibus mollitia consequuntur!
-                </p>
-                <p>November 30, 2022 at 6pm</p>
-            </div>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                <h3>Add a note about Michael</h3>
-                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
-                <input type="hidden" name="contact_id" value="<?php echo $contact_id; ?>">
-                <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter details here"></textarea>
-                <button type="submit" name="save">Add Note</button>
-            </form>
+            <?php foreach ($notes as $note) : ?>
+                <div>
+                    <h3><?php echo $note["firstname"] . " " . $note["lastname"] ?></h3>
+                    <p><?php echo $note["comment"] ?></p>
+                    <p><?php echo $created_by_note ?> </p>
+                </div>
+            <?php endforeach; ?>
+            <?php require "addNote.php" ?>
         </div>
     </div>
 
