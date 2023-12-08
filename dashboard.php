@@ -75,7 +75,7 @@ if (isset($_GET["filterBy"])) {
                                 <td><?php echo $contact["company"] ?></td>
                                 <td><?php echo $contact["type"] ?></td>
                                 <td>
-                                    <button class="viewBtn" data-id="<?php echo $contact["id"] ?>">View</button>
+                                    <button class="viewContactBtn" data-id="<?php echo $contact["id"] ?>">View</button>
                                 </td>
                             </tr>
                         <?php } ?>
