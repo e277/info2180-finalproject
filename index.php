@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <img src="dolphin.png" alt="Dolphin Logo">
         <span>Dolphin CRM</span>
     </header>
-    <section>
+    <section class="login-container">
         <div class="login">
             <h1>Login</h1>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">

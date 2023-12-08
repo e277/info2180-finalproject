@@ -22,7 +22,7 @@
                 </li>
                 <li>
                     <img src="contact.svg" alt="add contact">
-                    <button id="contactBtn">New Contact</button>
+                    <button id="addContactBtn">New Contact</button>
                 </li>
                 <li>
                     <img src="user.svg" alt="users">

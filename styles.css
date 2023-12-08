@@ -46,28 +46,22 @@ header img {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 0;
     list-style: none;
 }
 
 .sidebar ul li {
     position: relative;
     width: 100%;
-    padding: 15px 0;
-    margin: 0 20px;
+    padding: 15px 8px;
     display: flex;
     align-items: center;
     justify-content: start;
     transition: all 0.3s ease;
 }
 
-.sidebar ul li:hover {
-    background-color: #f1f1f1;
-}
-
 section {
-    width: calc(100% - 250px);
-    margin: 0 auto;
+    margin-left: 250px;
+    width: 100%;
 }
 
 section div {
@@ -75,6 +69,10 @@ section div {
 }
 
 /* Login Form */
+.login-container {
+    width: calc(100% - 250px);
+    margin: 0 auto;
+}
 .login {
     display: flex;
     flex-direction: column;

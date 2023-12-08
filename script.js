@@ -1,6 +1,33 @@
 $(document).ready(function () {
     // jquery code here
-    $("#homeBtn").click(function (e) {
+    let throttleTimer;
+    const throttleDelay = 500;
+
+    // Filter Contacts
+    $(document).on('click', '.filterBtn', function(e) {
+        e.preventDefault();
+        const filterValue = $(this).data("filter");
+        console.log(filterValue);
+        if (!throttleTimer) {
+            $.ajax({
+                url: "dashboard.php",
+                type: "GET",
+                data: { filterBy: filterValue },
+                success: function (response) {
+                    $("#filteredDataContainer").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+    
+            throttleTimer = setTimeout(function () {
+                throttleTimer = null;
+            }, throttleDelay);
+        }
+    });
+
+    $(document).on('click', '#homeBtn', function (e) {
         e.preventDefault();
         $.ajax({
             type: "GET",
@@ -14,7 +41,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#contactBtn").click(function (e) {
+    $(document).on('click', '#addContactBtn', function (e) {
         e.preventDefault();
         $.ajax({
             url: "addContact.php",
@@ -28,7 +55,22 @@ $(document).ready(function () {
         });
     });
 
-    $("#userBtn").click(function (e) {
+    // View Contact
+    $(document).on('click', '#viewContactBtn', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "viewContact.php",
+            type: "GET",
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on('click', '#userBtn', function (e) {
         e.preventDefault();
         $.ajax({
             url: "viewUser.php",
@@ -42,23 +84,8 @@ $(document).ready(function () {
         });
     });
 
-
-    $("#addContactBtn").click(function () {
-        console.log("add contact");
-        $.ajax({
-            url: "addContact.php",
-            type: "POST",
-            success: function (response) {
-                $("#content").html(response);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    });
-
-    $("#addUserBtn").click(function () {
-        console.log("add user");
+    $(document).on('click', '#addUserBtn', function (e) {
+        e.preventDefault();
         $.ajax({
             url: "addUser.php",
             type: "POST",
@@ -70,5 +97,6 @@ $(document).ready(function () {
             }
         });
     });
+
 });
 

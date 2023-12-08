@@ -11,22 +11,36 @@ $sql = "SELECT * FROM contacts";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// print_r("<pre>");
-// print_r($contacts[0]);
-// print_r("</pre>");
+
+$filterBy = ["All", "Sales Lead", "Support", "Assigned to me"];
+
+function filterContacts($contacts, $filterBy) {
+    if ($filterBy === "All") {
+        // No filtering needed for "All" case
+        return $contacts;
+    }
+
+    $filteredContacts = [];
+
+    foreach ($contacts as $contact) {
+        if (
+            ($filterBy === "Sales Lead" && $contact["type"] === "Sales Lead") ||
+            ($filterBy === "Support" && $contact["type"] === "Support") ||
+            ($filterBy === "Assigned to me" && $contact["assigned_to"] === $_SESSION["user_id"])
+        ) {
+            array_push($filteredContacts, $contact);
+        }
+    }
+
+    return $filteredContacts;
+}
+
+if (isset($_GET["filterBy"])) {
+    $filterBy = $_GET["filterBy"];
+    $contacts = filterContacts($contacts, $filterBy);
+}
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-</head>
     <div>
         <div>
             <h1>Dashboard</h1>
@@ -36,31 +50,38 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div>
                 <img src="./filter.svg" alt="filter">
                 <span>Filter By: </span>
-                <ul>
-                    <li class="active">All</li>
-                    <li>Sales Leads</li>
-                    <li>Support</li>
-                    <li>Assigned to me</li>
-                </ul>
+                <div class="filterType">
+                    <button class="filterBtn" data-filter="All">All</button>
+                    <button class="filterBtn" data-filter="Sales Lead">Sales Leads</button>
+                    <button class="filterBtn" data-filter="Support">Support</button>
+                    <button class="filterBtn" data-filter="Assigned to me">Assigned to me</button>
+                </div>
             </div>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                    <th>Type</th>
-                </tr>
-                <?php foreach ($contacts as $contact): ?>
-                    <tr>
-                        <td><?php echo $contact["firstname"] . " " . $contact["lastname"]; ?></td>
-                        <td><?php echo $contact["email"]; ?></td>
-                        <td><?php echo $contact["company"]; ?></td>
-                        <td class="type"><?php echo $contact["type"]; ?></td>
-                        <!-- <td><a href="viewContact.php?id=<?php //echo urlencode($contact['id']); ?>">View</a></td> -->
-                        <td><button id="viewContactBtn"></button></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+            <div id="filteredDataContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($contacts as $contact) { ?>
+                            <tr>
+                                <td><?php echo $contact["firstname"] . " " . $contact["lastname"] ?></td>
+                                <td><?php echo $contact["email"] ?></td>
+                                <td><?php echo $contact["company"] ?></td>
+                                <td><?php echo $contact["type"] ?></td>
+                                <td>
+                                    <button class="viewBtn" data-id="<?php echo $contact["id"] ?>">View</button>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
