@@ -56,11 +56,14 @@ $(document).ready(function () {
     });
 
     // View Contact
-    $(document).on('click', '#viewContactBtn', function (e) {
+    $(document).on('click', '.viewBtn', function (e) {
         e.preventDefault();
+        const contactId = $(this).data("id");
+        console.log(contactId);
         $.ajax({
             url: "viewContact.php",
             type: "GET",
+            data: { id: contactId },
             success: function (response) {
                 $("#content").html(response);
             },

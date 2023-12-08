@@ -8,6 +8,10 @@ if (!isset($_SESSION["csrf_token"])) {
 }
 $csrf_token = $_SESSION["csrf_token"];
 
+function checkPassword($password) {
+    $pattern = '/^(?=.*\d)(?=.*[A-Za-z])(?=.*[A-Z])[A-Za-z\d]{8,}$/';
+    return preg_match($pattern, $password);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -25,6 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+    if (!checkPassword($password)) {
+        echo "<script>alert('Password must be at least 8 characters long and contain at least one number and uppercase letter')</script>";
+        header("Location: /info2180-finalproject/addUser.php");
+    }
     $password = htmlspecialchars($password, ENT_QUOTES, "UTF-8");
 
     $sql = "SELECT * FROM users WHERE email = :email";
