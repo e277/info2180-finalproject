@@ -18,29 +18,31 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // print_r($users);
 
 ?>
-    <div>
-        <div>
+    <div class="contentContainer">
+        <div class="contentHeader">
             <h1>Users</h1>
             <button id="addUserBtn">+ Add User</button>
         </div>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Created</th>
-            </tr>
-
-            <!-- For loop to display data in a table -->
-            <?php foreach ($users as $user): ?>
+        <div class="tableContainer">
+            <table>
                 <tr>
-                    <td><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
-                    <td><?php echo $user["email"]; ?></td>
-                    <td><?php echo $user["role"]; ?></td>
-                    <td><?php echo $user["created_at"]; ?></td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created</th>
                 </tr>
-            <?php endforeach; ?>
-        </table>
+
+                <!-- For loop to display data in a table -->
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
+                        <td><?php echo $user["email"]; ?></td>
+                        <td><?php echo $user["role"]; ?></td>
+                        <td><?php echo $user["created_at"]; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
     </div>
 
 

@@ -27,6 +27,7 @@ $(document).ready(function () {
         }
     });
 
+    // Home / View All Contacts
     $(document).on('click', '#homeBtn', function (e) {
         e.preventDefault();
         $.ajax({
@@ -41,6 +42,7 @@ $(document).ready(function () {
         });
     });
 
+    // Add Contact
     $(document).on('click', '#addContactBtn', function (e) {
         e.preventDefault();
         $.ajax({
@@ -56,10 +58,10 @@ $(document).ready(function () {
     });
 
     // View Contact
-    $(document).on('click', '.viewBtn', function (e) {
+    $(document).on('click', '.viewContactBtn', function (e) {
         e.preventDefault();
         const contactId = $(this).data("id");
-        console.log(contactId);
+        console.log("Contact id: ", contactId);
         $.ajax({
             url: "viewContact.php",
             type: "GET",
@@ -73,6 +75,7 @@ $(document).ready(function () {
         });
     });
 
+    // View User
     $(document).on('click', '#userBtn', function (e) {
         e.preventDefault();
         $.ajax({
@@ -87,11 +90,30 @@ $(document).ready(function () {
         });
     });
 
+    // Add User
     $(document).on('click', '#addUserBtn', function (e) {
         e.preventDefault();
         $.ajax({
             url: "addUser.php",
             type: "POST",
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    // Add Note
+    $(document).on('click', '#addNoteBtn', function (e) {
+        e.preventDefault();
+        let formData = {'comment' : $('#comment').val()};
+        console.log(formData);
+        $.ajax({
+            url: "viewContact.php",
+            type: "POST",
+            data: formData,
             success: function (response) {
                 $("#content").html(response);
             },

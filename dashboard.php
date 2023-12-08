@@ -41,16 +41,16 @@ if (isset($_GET["filterBy"])) {
 }
 
 ?>
-    <div>
-        <div>
+    <div class="contentContainer">
+        <div class="contentHeader">
             <h1>Dashboard</h1>
             <button id="addContactBtn">+ Add Contact</button>
         </div>
         <div>
             <div>
-                <img src="./filter.svg" alt="filter">
-                <span>Filter By: </span>
                 <div class="filterType">
+                    <img src="./filter.svg" alt="filter">
+                    <span>Filter By: </span>
                     <button class="filterBtn" data-filter="All">All</button>
                     <button class="filterBtn" data-filter="Sales Lead">Sales Leads</button>
                     <button class="filterBtn" data-filter="Support">Support</button>
@@ -64,7 +64,7 @@ if (isset($_GET["filterBy"])) {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Company</th>
-                            <th>Type</th>
+                            <th colspan="2">Type</th>
                         </tr>
                     </thead>
                     <tbody>
