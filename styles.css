@@ -145,57 +145,53 @@ section {
 }
 
 
-/* General Form */
-form {
-    width: 900px;
-}
-
-
-/* .contentContainer  */
 
 
 /* add contact*/
-.addcontact{
-    float:right;
-    padding: 40px 50px 40px 50px;
+.formContainer {
+    border-radius: 10px;
+    margin: 40px;
 }
-
-.addcontact h1{
-    margin: 30px;
+.formContainer .form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
-
-.addcontact form div{
+.formContainer .form div {
+    width: 100%;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
-    padding: 15px 60px 15px 60px;
+    padding: 10px 0px;
     grid-template-areas:
-    "header header header"
-    "main main main"
-    "footer footer footer2";
+    "header header"
+    "main main"
+    "footer footer";
+    column-gap: 24px;
 }
-.addcontact form div div{
+.formContainer .form div div {
     display: flex;
     flex-direction: column;
-    padding: 2px 30px 2px 0px;
 }
 
-.addcontact button{
-    grid-area: footer2;
+.formContainer button {
+    grid-area: "" footer;
     font-size: 20px;
     width: 80px;
     border-radius: 5px;
-    background-color: #5500fb;
+    background-color: #5500fe;
     color: white;
 }
 
-.addcontact label{
+.formContainer label {
     font-size: 20px;
 }
 
-.addcontact input, select{
+.formContainer input, 
+.formContainer select{
     height: 30px;
     border-radius: 5px;
-    border: 50px;
-    padding:6px;
+    border: 1px solid #32332C;
+    padding: 6px;
 }
