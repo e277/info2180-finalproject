@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-    <div>
+    <div class="addcontact">
         <h1>New Contact</h1>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
