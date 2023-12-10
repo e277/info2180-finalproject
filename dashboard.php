@@ -7,7 +7,14 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: /info2180-finalproject/index.php");
 }
 
-$sql = "SELECT * FROM contacts";
+$sql = "SELECT c1.email, c1.id, c1.firstname, c1.lastname, c1.company, c1.type, c1.assigned_to
+        FROM contacts c1
+        JOIN (
+            SELECT email, MIN(id) as id
+            FROM contacts
+            WHERE email != ''
+            GROUP BY email
+        ) c2 ON c1.email = c2.email AND c1.id = c2.id;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -21,7 +21,8 @@ try {
 
     $users = [
         ["Admin", "Test", "password123", "admin@project2.com", "admin"],
-        ["User", "One", "user123", "user1@email.com", "member"]
+        ["User", "One", "user123", "user1@email.com", "member"],
+        ["User", "Three", "user123", "user3@email.com", "member"]
     ];
 
     // Loop

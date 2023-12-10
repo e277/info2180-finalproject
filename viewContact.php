@@ -47,22 +47,22 @@ $stmt2->execute();
 $created_by = $stmt2->fetch(PDO::FETCH_ASSOC);
 
 // get contact who has been assigned to
-$sql3 = "SELECT c.firstname, c.lastname FROM users u JOIN contacts c ON u.id = c.assigned_to WHERE u.id = :assigned_to AND c.assigned_to IS NOT NULL";
+$sql3 = "SELECT c.firstname, c.lastname, c.type FROM users u JOIN contacts c ON u.id = c.assigned_to WHERE u.id = :assigned_to AND c.assigned_to IS NOT NULL";
 $stmt3 = $pdo->prepare($sql3);
 $stmt3->bindParam(":assigned_to", $contact['assigned_to']);
 $stmt3->execute();
 $assigned_to = $stmt3->fetch(PDO::FETCH_ASSOC);
 
 // get notes for contact
-$sql4 = "SELECT u.id, u.firstname, u.lastname, n.comment, n.created_at FROM notes n JOIN users u ON u.id = n.created_by WHERE u.id = :created_by AND n.created_by IS NOT NULL";
+$sql4 = "SELECT c.id, c.firstname, c.lastname, n.comment, n.created_at FROM notes n JOIN contacts c ON c.id = n.contact_id WHERE c.id = :contact_id AND n.contact_id IS NOT NULL";
 $stmt4 = $pdo->prepare($sql4);
-$stmt4->bindParam(":created_by", $contact['created_by']);
+$stmt4->bindParam(":contact_id", $contact['contact_id']);
 $stmt4->execute();
 $notes = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 // print_r($notes);
 foreach ($notes as $note) {
-    $created_by_note = new DateTime($note['created_at']);
-    $created_by_note = $created_by_note->format("M, j, Y") . " at " . $created_by_note->format("g:i A");
+    $contact_id_note = new DateTime($note['created_at']);
+    $contact_id_note = $contact_id_note->format("M, j, Y") . " at " . $contact_id_note->format("g:i A");
 }
 
 // Check if the request is an AJAX request
@@ -118,8 +118,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 </div>
             </div>
             <div class="btns">
-                <button><img src="hand.svg" alt="hand">Assign to me</button>
-                <button><img src="switch.svg" alt="switch">Switch to Sales Lead</button>
+                <button data-userid="<?php echo $_SESSION["user_id"]; ?>"><img src="hand.svg" alt="hand">Assign to me</button>
+                <button data-type="<?php echo $contact["type"] ? $contact["type"] : "" ?>"><img src="switch.svg" alt="switch">Switch to <?php echo $contact["type"] ?></button>
             </div>
         </div>
 
@@ -149,7 +149,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 <div>
                     <h4><?php echo $note["firstname"] . " " . $note["lastname"] ?></h4>
                     <p><?php echo $note["comment"] ?></p>
-                    <p><?php echo $created_by_note ?> </p>
+                    <p><?php echo $contact_id_note ?> </p>
                 </div>
             <?php endforeach; ?>
 

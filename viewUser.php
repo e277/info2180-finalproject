@@ -9,7 +9,14 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != "admin") {
 }
 
 if ($_SESSION["user_role"] == "admin") {
-    $sql = "SELECT * FROM users";
+    $sql = "SELECT u1.email, u1.id, u1.firstname, u1.lastname, u1.role, u1.created_at 
+            FROM users u1
+            JOIN (
+                SELECT email, MIN(id) as id
+                FROM users
+                WHERE email != ''
+                GROUP BY email
+            ) u2 ON u1.email = u2.email AND u1.id = u2.id;";
 }
 
 $stmt = $pdo->prepare($sql);
