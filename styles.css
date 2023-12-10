@@ -155,11 +155,20 @@ form {
 
 
 /* add contact*/
+.addcontact{
+    float:right;
+    padding: 40px 50px 40px 50px;
+}
+
+.addcontact h1{
+    margin: 30px;
+}
+
 .addcontact form div{
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
-    padding: 10px;
+    padding: 15px 60px 15px 60px;
     grid-template-areas:
     "header header header"
     "main main main"
@@ -168,6 +177,7 @@ form {
 .addcontact form div div{
     display: flex;
     flex-direction: column;
+    padding: 2px 30px 2px 0px;
 }
 
 .addcontact button{
@@ -181,11 +191,11 @@ form {
 
 .addcontact label{
     font-size: 20px;
-    padding:10px;
 }
 
 .addcontact input, select{
     height: 30px;
     border-radius: 5px;
     border: 50px;
+    padding:6px;
 }
