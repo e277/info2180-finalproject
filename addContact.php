@@ -20,70 +20,74 @@ $contact_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // print_r($contact_users);
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        !isset($_POST["csrf_token"])
-        || !isset($_POST["title"]) 
-        || !isset($_POST["firstname"]) 
-        || !isset($_POST["lastname"]) 
-        || !isset($_POST["email"]) 
-        || !isset($_POST["telephone"]) 
-        || !isset($_POST["company"]) 
-        || !isset($_POST["type"]) 
-        || !isset($_POST["assigned_to"]) 
-        || !isset($_POST["user_id"])
-    ) {
-        echo "<script>alert('All fields are required')</script>";
-        header("Location: /info2180-finalproject/addContact.php");
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (
+            !isset($_POST["csrf_token"])
+            || !isset($_POST["title"]) 
+            || !isset($_POST["firstname"]) 
+            || !isset($_POST["lastname"]) 
+            || !isset($_POST["email"]) 
+            || !isset($_POST["telephone"]) 
+            || !isset($_POST["company"]) 
+            || !isset($_POST["type"]) 
+            || !isset($_POST["assigned_to"]) 
+            || !isset($_POST["user_id"])
+        ) {
+            echo "<script>alert('All fields are required')</script>";
+            header("Location: /info2180-finalproject/addContact.php");
+        }
+        
+        $title     = $_POST["title"];
+        $firstname = $_POST["firstname"];
+        $lastname  = $_POST["lastname"];
+        $email     = $_POST["email"];
+        $telephone = $_POST["telephone"];
+        $company   = $_POST["company"];
+        $type      = $_POST["type"];
+        $assigned_to = $_POST["assigned_to"];
+        $created_by   = $_POST["user_id"];
+
+        if (!hash_equals($csrf_token, $_POST["csrf_token"])) {
+            // echo "<script>alert('Invalid CSRF token')</script>";
+            header("Location: /info2180-finalproject/");
+        }
+
+        $title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
+        $firstname = htmlspecialchars($firstname, ENT_QUOTES, "UTF-8");
+        $lastname = htmlspecialchars($lastname, ENT_QUOTES, "UTF-8");
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $telephone = filter_var($telephone, FILTER_SANITIZE_NUMBER_INT);
+        $company = htmlspecialchars($company, ENT_QUOTES, "UTF-8");
+        $type = htmlspecialchars($type, ENT_QUOTES, "UTF-8");
+        $assigned_to = htmlspecialchars($assigned_to, ENT_QUOTES, "UTF-8");
+
+        $sql = "INSERT INTO contacts (title, firstname, lastname, email, telephone, company, type, assigned_to, created_by) VALUES (:title, :firstname, :lastname, :email, :telephone, :company, :type, :assigned_to, :created_by)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":title", $title);
+        $stmt->bindParam(":firstname", $firstname);
+        $stmt->bindParam(":lastname", $lastname);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":telephone", $telephone);
+        $stmt->bindParam(":company", $company);
+        $stmt->bindParam(":type", $type);
+        $stmt->bindParam(":assigned_to", $assigned_to);
+        $stmt->bindParam(":created_by", $created_by);
+        $stmt->execute();
+
+        echo "<script>alert('Contact added successfully')</script>";
+        header("Location: /info2180-finalproject/home.php");
+        
     }
-    
-    $title     = $_POST["title"];
-    $firstname = $_POST["firstname"];
-    $lastname  = $_POST["lastname"];
-    $email     = $_POST["email"];
-    $telephone = $_POST["telephone"];
-    $company   = $_POST["company"];
-    $type      = $_POST["type"];
-    $assigned_to = $_POST["assigned_to"];
-    $created_by   = $_POST["user_id"];
-
-    if (!hash_equals($csrf_token, $_POST["csrf_token"])) {
-        // echo "<script>alert('Invalid CSRF token')</script>";
-        header("Location: /info2180-finalproject/");
-    }
-
-    $title = htmlspecialchars($title, ENT_QUOTES, "UTF-8");
-    $firstname = htmlspecialchars($firstname, ENT_QUOTES, "UTF-8");
-    $lastname = htmlspecialchars($lastname, ENT_QUOTES, "UTF-8");
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    $telephone = filter_var($telephone, FILTER_SANITIZE_NUMBER_INT);
-    $company = htmlspecialchars($company, ENT_QUOTES, "UTF-8");
-    $type = htmlspecialchars($type, ENT_QUOTES, "UTF-8");
-    $assigned_to = htmlspecialchars($assigned_to, ENT_QUOTES, "UTF-8");
-
-    $sql = "INSERT INTO contacts (title, firstname, lastname, email, telephone, company, type, assigned_to, created_by) VALUES (:title, :firstname, :lastname, :email, :telephone, :company, :type, :assigned_to, :created_by)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(":title", $title);
-    $stmt->bindParam(":firstname", $firstname);
-    $stmt->bindParam(":lastname", $lastname);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":telephone", $telephone);
-    $stmt->bindParam(":company", $company);
-    $stmt->bindParam(":type", $type);
-    $stmt->bindParam(":assigned_to", $assigned_to);
-    $stmt->bindParam(":created_by", $created_by);
-    $stmt->execute();
-
-    header("Location: /info2180-finalproject/home.php");
 }
 
 ?>
 
     <div class="formContainer">
         <h1>New Contact</h1>
-        <form class="form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>" required>
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>" required>
+        <form class="form" id="addContact" method="POST">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo $csrf_token; ?>" required>
+            <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>" required>
             <div>
                 <label for="title">Title
                 <select name="title" id="title" required>

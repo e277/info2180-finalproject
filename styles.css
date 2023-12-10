@@ -20,8 +20,10 @@ header {
     height: 70px;
     background-color: #32332C;
     color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
-
 header img {
     width: 30px;
     height: 30px;
@@ -39,8 +41,9 @@ header img {
     background-color: white;
     color: #32332C;
     transition: all 0.3s ease;
+    border-right: 1px solid #cbcbcb;
+    box-shadow: 0 0 2px #cbcbcb;
 }
-
 .sidebar ul {
     position: absolute;
     top: 0;
@@ -48,7 +51,6 @@ header img {
     width: 100%;
     list-style: none;
 }
-
 .sidebar ul li {
     position: relative;
     width: 100%;
@@ -58,10 +60,15 @@ header img {
     justify-content: start;
     transition: all 0.3s ease;
 }
+.sidebar hr {
+    margin-right: 16px;
+    opacity: 0.8;
+}
 
 /* Root element of dynamic content */
 section {
     margin-left: 250px;
+    margin-top: 75px;
 }
 
 /* Holds dynamic section of app */
@@ -108,6 +115,7 @@ section {
 .login-container {
     width: calc(100% - 250px);
     margin: 0 auto;
+    margin-top: 100px;
 }
 .login {
     display: flex;
@@ -152,22 +160,23 @@ section {
     border-radius: 10px;
     margin: 40px;
 }
+.formContainer h1 {
+    margin: 40px 0 20px 0;
+}
 .formContainer .form {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 .formContainer .form div {
     width: 100%;
     display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto;
     padding: 10px 0px;
     grid-template-areas:
-    "header header"
-    "main main"
-    "footer footer";
+        "header header"
+        "main main"
+        "_ footer";
     column-gap: 24px;
 }
 .formContainer .form div div {
@@ -176,12 +185,18 @@ section {
 }
 
 .formContainer button {
-    grid-area: "" footer;
-    font-size: 20px;
-    width: 80px;
+    width: 100%;
+    height: 30px;
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid #056287;
     border-radius: 5px;
-    background-color: #5500fe;
+    outline: none;
+    background-color: #056287;
     color: white;
+    font-weight: bold;
+    cursor: pointer;
+    grid-area: footer;
 }
 
 .formContainer label {
@@ -194,4 +209,83 @@ section {
     border-radius: 5px;
     border: 1px solid #32332C;
     padding: 6px;
+}
+
+
+/* View Notes for Contact */
+.notesContainer {
+    background-color: white;
+    min-height: 100vh;
+    padding: 40px;
+}
+.profileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profileHeader .profileInfo {
+    display: flex;
+}
+.profileHeader .profileInfo img {
+    width: 50px;
+    height: 50px;
+    margin: 10px 0;
+    object-fit: contain;
+}
+.profileHeader .btns {
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+}
+.info1 {
+    border: 1px solid #797878;
+    margin: 16px 0;
+    padding: 16px;
+    border-radius: 5px;
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+    "header header"
+        "main main"
+        "footer footer";
+    column-gap: 24px;
+}
+.info1 div {
+    padding: 24px;
+}
+.info2 {
+    border: 1px solid #797878;
+    margin: 16px 0;
+    padding: 16px;
+    border-radius: 5px;
+}
+.info2 div {
+    padding: 24px 0;
+}
+.info2 .noteForm {
+    width: 100%;
+    background-color: #f1f1f1a7;
+    padding: 24px;
+}
+.info2 .noteForm textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    margin: 8px 0;
+    outline: none;
+}
+.info2 .noteForm button {
+    width: 100%;
+    height: 30px;
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid #056287;
+    border-radius: 5px;
+    outline: none;
+    background-color: #056287;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }

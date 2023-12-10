@@ -75,13 +75,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             || !isset($_POST["comment"])
         ) {
             // Return a JSON response instead of redirecting
-            echo json_encode(['error' => 'All fields are required']);
+            echo "<script>alert('All fields are required')</script>";
             exit;
         }
 
         if (!hash_equals($csrf_token, $_POST["csrf_token"])) {
             // Return a JSON response instead of redirecting
-            echo json_encode(['error' => 'Invalid CSRF token']);
+            // echo json_encode(['error' => 'Invalid CSRF token']);
             exit;
         }
 
@@ -101,72 +101,67 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
         $stmt2->execute();
 
         // Return a JSON response instead of redirecting
-        // echo json_encode(['success' => 'Note added successfully']);
-        header("Location: /info2180-finalproject/viewContact.php?id=" . $contact_id);
-        exit;
+        echo "<script>alert('Note added successfully')</script>";
     }
 }
 
 
 ?>
-    <div class="contentContainer">
-        <div>
-            <div>
+    <div class="notesContainer">
+        <div class="profileHeader">
+            <div class="profileInfo">
                 <img src="profile.svg" alt="profile">
                 <div>
-                    <h2><?php echo $contact["title"] . " " . $contact["firstname"] . " " . $contact["lastname"]; ?></h2>
-                    <h4>Created on <?php echo $created_at ?> by <?php echo $created_by["firstname"] . " " . $created_by["lastname"] ?></h4>
-                    <h4>Updated on <?php echo $updated_at ?></h4>
+                    <h1><?php echo $contact["title"] . " " . $contact["firstname"] . " " . $contact["lastname"]; ?></h1>
+                    <p>Created on <?php echo $created_at ?> by <?php echo $created_by["firstname"] . " " . $created_by["lastname"] ?></p>
+                    <p>Updated on <?php echo $updated_at ?></p>
                 </div>
             </div>
-            <div>
-                <button>
-                    <img src="hand.svg" alt="hand">Assign to me
-                </button>
-                <button>
-                    <img src="switch.svg" alt="switch">
-                    Switch to Sales Lead
-                </button>
+            <div class="btns">
+                <button><img src="hand.svg" alt="hand">Assign to me</button>
+                <button><img src="switch.svg" alt="switch">Switch to Sales Lead</button>
             </div>
         </div>
 
-        <div>
+        <div class="info1">
             <div>
-                <h4>Email</h4>
-                <h4><?php echo $contact["email"] ?></h4>
+                <p>Email</p>
+                <p><?php echo $contact["email"] ?></p>
             </div>
             <div>
-                <h4>Telephone</h4>
-                <h4><?php echo $contact["telephone"] ?></h4>
+                <p>Telephone</p>
+                <p><?php echo $contact["telephone"] ?></p>
             </div>
             <div>
-                <h4>Company</h4>
-                <h4><?php echo $contact["company"] ?></h4>
+                <p>Company</p>
+                <p><?php echo $contact["company"] ?></p>
             </div>
             <div>
-                <h4>Assigned To</h4>
-                <h4><?php echo $contact["firstname"] . " " . $contact["lastname"] ?></h4>
+                <p>Assigned To</p>
+                <p><?php echo $contact["firstname"] . " " . $contact["lastname"] ?></p>
             </div>
         </div>
 
-        <div>
+        <div class="info2">
+            <h4><img src="./edit.svg" alt="Edit">Notes</h4>
+            <hr>
             <?php foreach ($notes as $note) : ?>
                 <div>
-                    <h3><?php echo $note["firstname"] . " " . $note["lastname"] ?></h3>
+                    <h4><?php echo $note["firstname"] . " " . $note["lastname"] ?></h4>
                     <p><?php echo $note["comment"] ?></p>
                     <p><?php echo $created_by_note ?> </p>
                 </div>
             <?php endforeach; ?>
 
             <!-- Add the Note Form -->
-            <div>
+            <div class="noteForm">
                 <form id="saveNote" method="POST">
                     <h3>Add a note about <?php echo $contact["firstname"] ?></h3>
                     <input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo $csrf_token; ?>">
                     <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
                     <input type="hidden" id="contact_id" name="contact_id" value="<?php echo $_SESSION["contact_id"]; ?>">
                     <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter details here"></textarea>
-                    <button type="submit" name="save" id="addNoteBtn">Add Note</button>
+                    <button type="submit" name="save">Add Note</button>
                 </form>
             </div>
         </div>

@@ -41,46 +41,48 @@ if (isset($_GET["filterBy"])) {
 }
 
 ?>
-    <div class="contentContainer">
-        <div class="contentHeader">
-            <h1>Dashboard</h1>
-            <button id="addContactBtn">+ Add Contact</button>
-        </div>
-        <div>
-            <div>
-                <div class="filterType">
-                    <img src="./filter.svg" alt="filter">
-                    <span>Filter By: </span>
-                    <button class="filterBtn" data-filter="All">All</button>
-                    <button class="filterBtn" data-filter="Sales Lead">Sales Leads</button>
-                    <button class="filterBtn" data-filter="Support">Support</button>
-                    <button class="filterBtn" data-filter="Assigned to me">Assigned to me</button>
-                </div>
+    <div id="filteredDataContainer">
+        <div class="contentContainer" >
+            <div class="contentHeader">
+                <h1>Dashboard</h1>
+                <button id="addContactBtn">+ Add Contact</button>
             </div>
-            <div id="filteredDataContainer">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Company</th>
-                            <th colspan="2">Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($contacts as $contact) { ?>
+            <div>
+                <div>
+                    <div class="filterType">
+                        <img src="./filter.svg" alt="filter">
+                        <span>Filter By: </span>
+                        <button class="filterBtn" data-filter="All">All</button>
+                        <button class="filterBtn" data-filter="Sales Lead">Sales Leads</button>
+                        <button class="filterBtn" data-filter="Support">Support</button>
+                        <button class="filterBtn" data-filter="Assigned to me">Assigned to me</button>
+                    </div>
+                </div>
+                <div>
+                    <table>
+                        <thead>
                             <tr>
-                                <td><?php echo $contact["firstname"] . " " . $contact["lastname"] ?></td>
-                                <td><?php echo $contact["email"] ?></td>
-                                <td><?php echo $contact["company"] ?></td>
-                                <td><?php echo $contact["type"] ?></td>
-                                <td>
-                                    <button class="viewContactBtn" data-id="<?php echo $contact["id"] ?>">View</button>
-                                </td>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Company</th>
+                                <th colspan="2">Type</th>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($contacts as $contact) { ?>
+                                <tr>
+                                    <td><?php echo $contact["firstname"] . " " . $contact["lastname"] ?></td>
+                                    <td><?php echo $contact["email"] ?></td>
+                                    <td><?php echo $contact["company"] ?></td>
+                                    <td><?php echo $contact["type"] ?></td>
+                                    <td>
+                                        <button class="viewContactBtn" data-id="<?php echo $contact["id"] ?>">View</button>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

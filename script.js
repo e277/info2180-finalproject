@@ -2,6 +2,7 @@ $(document).ready(function () {
     // jquery code here
     let throttleTimer;
     const throttleDelay = 500;
+    viewAllContacts();
 
     // Filter Contacts
     $(document).on('click', '.filterBtn', function(e) {
@@ -27,6 +28,7 @@ $(document).ready(function () {
         }
     });
 
+
     // Home / View All Contacts
     function viewAllContacts() {
         $.ajax({
@@ -45,12 +47,41 @@ $(document).ready(function () {
         viewAllContacts();
     });
 
+
     // Add Contact
     $(document).on('click', '#addContactBtn', function (e) {
         e.preventDefault();
         $.ajax({
             url: "addContact.php",
             type: "POST",
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on('submit', '#addContact', function (e) {
+        e.preventDefault();
+        let formData = {
+            csrf_token: $("#csrf_token").val(),
+            user_id: $("#user_id").val(),
+            title: $("#title").val(),
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            email: $("#email").val(),
+            telephone: $("#telephone").val(),
+            company: $("#company").val(),
+            type: $("#type").val(),
+            assigned_to: $("#assigned_to").val()
+        };
+        console.log(formData);
+        $.ajax({
+            url: "addContact.php",
+            type: "POST",
+            data: formData,
             success: function (response) {
                 $("#content").html(response);
             },
@@ -81,6 +112,7 @@ $(document).ready(function () {
         viewContact(contactId);
     });
 
+
     // View User
     $(document).on('click', '#userBtn', function (e) {
         e.preventDefault();
@@ -96,6 +128,7 @@ $(document).ready(function () {
         });
     });
 
+
     // Add User
     $(document).on('click', '#addUserBtn', function (e) {
         e.preventDefault();
@@ -110,6 +143,31 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).on('submit', '#saveUser', function (e) {
+        e.preventDefault();
+        let formData = {
+            csrf_token: $("#csrf_token").val(),
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            role: $("#role").val()
+        };
+        console.log(formData);
+        $.ajax({
+            url: "addUser.php",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                $("#content").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
 
     // Add Note
     $(document).on('submit', '#saveNote', function (e) {
