@@ -28,18 +28,21 @@ $(document).ready(function () {
     });
 
     // Home / View All Contacts
-    $(document).on('click', '#homeBtn', function (e) {
-        e.preventDefault();
+    function viewAllContacts() {
         $.ajax({
-            type: "GET",
             url: "dashboard.php",
-            success: (response) => {
-                $("#content").html(response);                
+            type: "GET",
+            success: function (response) {
+                $("#content").html(response);
             },
             error: function (error) {
                 console.log(error);
             }
         });
+    }
+    $(document).on('click', '#homeBtn', function (e) {
+        e.preventDefault();
+        viewAllContacts();
     });
 
     // Add Contact
@@ -58,9 +61,7 @@ $(document).ready(function () {
     });
 
     // View Contact
-    $(document).on('click', '.viewContactBtn', function (e) {
-        e.preventDefault();
-        const contactId = $(this).data("id");
+    function viewContact(contactId) {
         console.log("Contact id: ", contactId);
         $.ajax({
             url: "viewContact.php",
@@ -73,6 +74,11 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
+    }
+    $(document).on('click', '.viewContactBtn', function (e) {
+        e.preventDefault();
+        const contactId = $(this).data("id");
+        viewContact(contactId);
     });
 
     // View User
@@ -106,15 +112,21 @@ $(document).ready(function () {
     });
 
     // Add Note
-    $(document).on('click', '#addNoteBtn', function (e) {
+    $(document).on('submit', '#saveNote', function (e) {
         e.preventDefault();
-        // let formData = {'comment' : $('#comment').val()};
-        // console.log(formData);
+        let formData = {
+            csrf_token: $("#csrf_token").val(),
+            user_id: $("#user_id").val(),
+            contact_id: $("#contact_id").val(),
+            comment: $("#comment").val()
+        };
+        console.log(formData);
         $.ajax({
             url: "viewContact.php",
             type: "POST",
-            data: new FormData(this),
+            data: formData,
             success: function (response) {
+                viewContact(formData.contact_id);
                 $("#content").html(response);
                 console.log(response);
             },

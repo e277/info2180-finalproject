@@ -16,9 +16,9 @@ if (!isset($_SESSION["user_id"])) {
 $_SESSION["contact_id"] = isset($_GET['id']) ? intval($_GET['id']) : 0;
 // print_r($contact_id);
 
-if (isset($_SESSION["contact_id"] )) {
-    // echo "<p style='left: 0; bottom: 50px'>Session contact id: </p> " . $_SESSION["contact_id"];
-    echo "<p>Session contact id: </p> " . $_SESSION["contact_id"];
+if (!isset($_SESSION["contact_id"] )) {
+    // echo "<p>Session contact id: " . $_SESSION["contact_id"] . "</p>";
+    echo "<script>alert('Contact not found')</script>";
 }
 
 $sql = "SELECT * FROM contacts WHERE id = :id";
@@ -101,7 +101,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
         $stmt2->execute();
 
         // Return a JSON response instead of redirecting
-        echo json_encode(['success' => 'Note added successfully']);
+        // echo json_encode(['success' => 'Note added successfully']);
+        header("Location: /info2180-finalproject/viewContact.php?id=" . $contact_id);
         exit;
     }
 }
@@ -161,9 +162,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             <div>
                 <form id="saveNote" method="POST">
                     <h3>Add a note about <?php echo $contact["firstname"] ?></h3>
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                    <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
-                    <input type="hidden" name="contact_id" value="<?php echo $_SESSION["contact_id"]; ?>">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
+                    <input type="hidden" id="contact_id" name="contact_id" value="<?php echo $_SESSION["contact_id"]; ?>">
                     <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter details here"></textarea>
                     <button type="submit" name="save" id="addNoteBtn">Add Note</button>
                 </form>
