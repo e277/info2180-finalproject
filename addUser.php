@@ -81,39 +81,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-    <div>
-        <div>
-            <h3>New User</h3>
-        </div>
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+    <div class="formContainer">
+        <h3>New User</h3>
+        <form class="form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <div>
                 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                 <div>
                     <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname">
+                    <input type="text" id="firstname" name="firstname" required>
                 </div>
                 <div>
                     <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname" name="lastname">
+                    <input type="text" id="lastname" name="lastname" required>
                 </div>
             </div>
             <div>
                 <div>
-                    <label for="email">Email</label><br>
-                    <input type="email" id="email" name="email">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 <div>
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
+                    <input type="password" id="password" name="password" required>
                 </div>
             </div>
         
             <div>
-                <label for="role">Role</label>
-                <select name="role" id="role">
-                    <option value="member">Member</option>
-                    <option value="admin">Admin</option>
-                </select>
+                <label for="role">Role
+                    <select name="role" id="role" required>
+                        <option value="" selected>Select Role</option>
+                        <option value="member">Member</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </label>
             </div>
             <div>
                 <button type="submit" name="save">Save</button>

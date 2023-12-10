@@ -71,14 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="login">
             <h1>Login</h1>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="login-form">
-                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>" required>
                 <div>
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Email address">
+                    <input type="email" name="email" id="email" placeholder="Email address" required>
                 </div>
                 <div>
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
                 </div>
                 <div>
                     <button type="submit" id="login-btn">Login</button>

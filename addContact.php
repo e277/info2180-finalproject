@@ -79,59 +79,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-    <div class="addcontact">
+    <div class="formContainer">
         <h1>New Contact</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
+        <form class="form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>" required>
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>" required>
             <div>
-                <label for="title">Title</label>
-                <select name="title" id="title">
+                <label for="title">Title
+                <select name="title" id="title" required>
+                    <option value="" selected>Select Title</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Ms.">Ms.</option>
                     <option value="Mrs.">Mrs.</option>
                 </select>
+                </label>
             </div>
             <div>
                 <div>
                     <label for="firstname">First Name</label>
-                    <input type="text" name="firstname" id="firstname" placeholder="First Name">
+                    <input type="text" name="firstname" id="firstname" placeholder="First Name" required>
                 </div>
                 <div>
                     <label for="lastname">Last Name</label>
-                    <input type="text" name="lastname" id="lastname" placeholder="Last Name">
+                    <input type="text" name="lastname" id="lastname" placeholder="Last Name" required>
                 </div>
             </div>
             <div>
                 <div>
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Email address">
+                    <input type="email" name="email" id="email" placeholder="Email address" required>
                 </div>
                 <div>
                     <label for="telephone">Telephone</label>
-                    <input type="tel" name="telephone" id="telephone" placeholder="Telephone">
+                    <input type="tel" name="telephone" id="telephone" placeholder="Telephone" required>
                 </div>
             </div>
             <div>
                 <div>
                     <label for="company">Company</label>
-                    <input type="text" name="company" id="company" placeholder="Company name">
+                    <input type="text" name="company" id="company" placeholder="Company name" required>
                 </div>
                 <div>
                     <label for="type">Type</label>
-                    <select name="type" id="type">
+                    <select name="type" id="type" required>
+                        <option value="" selected>Select Type</option>
                         <option value="Sales Lead">Sales Lead</option>
                         <option value="Support">Support</option>
                     </select>
                 </div>
             </div>
             <div>
-                <label for="assigned_to">Assigned To</label>
-                <select name="assigned_to" id="assigned_to">
-                    <?php foreach ($contact_users as $user): ?>
-                        <option value="<?php echo $user["id"]; ?>"><?php echo $user["firstname"] . ' '. $user['lastname']; ?></option>
-                    <?php endforeach; ?>
-                </select>
+                <label for="assigned_to">Assigned To
+                    <select name="assigned_to" id="assigned_to" required>
+                        <option value="" selected>Select Contact</option>
+                        <?php foreach ($contact_users as $user): ?>
+                            <option value="<?php echo $user["id"]; ?>"><?php echo $user["firstname"] . ' '. $user['lastname']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
             </div>
             <div>
                 <button type="submit" name="save">Save</button>
