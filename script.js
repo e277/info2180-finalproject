@@ -112,6 +112,62 @@ $(document).ready(function () {
         viewContact(contactId);
     });
 
+    // Handle Assign to me and Switch Contact Type
+    $(document).on("click", ".btns button:first-child", function (e) {
+        e.preventDefault();
+        console.log("Clicked");
+        const assignedTo = $(this).data("userid");
+        console.log("Assign to me: ", assignedTo);
+        // if (assignedTo) {
+        //     $.ajax({
+        //         url: "viewContact.php",
+        //         type: "POST",
+        //         data: { assigned_to: assignedTo },
+        //         success: function (response) {
+        //             $("#content").html(response);
+        //         },
+        //         error: function (error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // }
+    });
+    $(document).on("click", ".btns button:nth-child(2)", function (e) {
+        e.preventDefault();
+        console.log("Clicked");
+        const type = $(this).data("type");
+        console.log("Type: ", type);
+    //     // if type is like 'sales' change to 'support' else change to 'sales'
+    //     if (type == '/sales/i') {
+    //         $.ajax({
+    //             url: "viewContact.php",
+    //             type: "POST",
+    //             data: { type: 'Support' },
+    //             success: function (response) {
+    //                 $("#content").html(response);
+    //             },
+    //             error: function (error) {
+    //                 console.log(error);
+    //             }
+    //         });
+    //     } else {
+    //         $.ajax({
+    //             url: "viewContact.php",
+    //             type: "POST",
+    //             data: { type: 'Sales Lead' },
+    //             success: function (response) {
+    //                 $("#content").html(response);
+    //             },
+    //             error: function (error) {
+    //                 console.log(error);
+    //             }
+    //         });
+    //     }
+    });
+        
+
+
+
 
     // View User
     $(document).on('click', '#userBtn', function (e) {
