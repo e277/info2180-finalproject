@@ -159,7 +159,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
             <!-- Add the Note Form -->
             <div>
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+                <form id="saveNote" method="POST">
                     <h3>Add a note about <?php echo $contact["firstname"] ?></h3>
                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                     <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">

@@ -108,14 +108,15 @@ $(document).ready(function () {
     // Add Note
     $(document).on('click', '#addNoteBtn', function (e) {
         e.preventDefault();
-        let formData = {'comment' : $('#comment').val()};
-        console.log(formData);
+        // let formData = {'comment' : $('#comment').val()};
+        // console.log(formData);
         $.ajax({
             url: "viewContact.php",
             type: "POST",
-            data: formData,
+            data: new FormData(this),
             success: function (response) {
                 $("#content").html(response);
+                console.log(response);
             },
             error: function (error) {
                 console.log(error);
